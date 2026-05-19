@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 10 npm run dev)",
+      "Bash(npm install:*)",
+      "Bash(python:*)",
+      "Bash(powershell -command \"Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\('C:\\\\\\\\Users\\\\\\\\21754\\\\\\\\Desktop\\\\\\\\magical-ui\\\\\\\\src\\\\\\\\assets\\\\\\\\background.png'\\); Write-Host $img.Width $img.Height\")",
+      "Bash(powershell -command \"$img = [System.Drawing.Bitmap]::new\\('C:\\\\\\\\Users\\\\\\\\21754\\\\\\\\Desktop\\\\\\\\magical-ui\\\\\\\\src\\\\\\\\assets\\\\\\\\background.png'\\); Write-Host \\($img.Width.ToString\\(\\) + 'x' + $img.Height.ToString\\(\\)\\)\")",
+      "Bash(node -e \"const sharp = require\\(''''./node_modules/sharp''''\\); sharp\\(''''src/assets/background.jpg''''\\).resize\\(800\\).toFile\\(''''src/assets/background_preview.jpg'''', \\(e,i\\)=>console.log\\(e||i\\)\\)\")",
+      "Bash(powershell -command \"\n\\\\$img = New-Object System.Drawing.Bitmap\\('C:\\\\\\\\Users\\\\\\\\21754\\\\\\\\Desktop\\\\\\\\magical-ui\\\\\\\\src\\\\\\\\assets\\\\\\\\background.jpg'\\)\nWrite-Host 'Size:' \\\\$img.Width \\\\$img.Height\n\\\\$thumb = \\\\$img.GetThumbnailImage\\(600, 400, \\\\$null, [IntPtr]::Zero\\)\n\\\\$thumb.Save\\('C:\\\\\\\\Users\\\\\\\\21754\\\\\\\\Desktop\\\\\\\\magical-ui\\\\\\\\src\\\\\\\\assets\\\\\\\\bg_thumb.jpg'\\)\nWrite-Host 'Saved thumbnail'\n\")",
+      "Bash(powershell -command \"Add-Type -AssemblyName System.Drawing; \\\\$img = [System.Drawing.Image]::FromFile\\('C:\\\\\\\\Users\\\\\\\\21754\\\\\\\\Desktop\\\\\\\\magical-ui\\\\\\\\src\\\\\\\\assets\\\\\\\\background.jpg'\\); \\\\$w = \\\\$img.Width; \\\\$h = \\\\$img.Height; \\\\$ratio = [double]600/\\\\$w; \\\\$nw = 600; \\\\$nh = [int]\\(\\\\$h * \\\\$ratio\\); \\\\$bmp = New-Object System.Drawing.Bitmap\\(\\\\$nw, \\\\$nh\\); \\\\$g = [System.Drawing.Graphics]::FromImage\\(\\\\$bmp\\); \\\\$g.DrawImage\\(\\\\$img, 0, 0, \\\\$nw, \\\\$nh\\); \\\\$bmp.Save\\('C:\\\\\\\\Users\\\\\\\\21754\\\\\\\\Desktop\\\\\\\\magical-ui\\\\\\\\src\\\\\\\\assets\\\\\\\\bg_thumb.jpg'\\); Write-Host \\\\$w \\\\$h\")",
+      "Bash(node -e:*)",
+      "Bash(node -e \"require\\(''''sharp''''\\)\")",
+      "Bash(node -e \"require\\(''''jimp''''\\)\")"
+    ]
+  }
+}
