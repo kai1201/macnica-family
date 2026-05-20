@@ -12,18 +12,20 @@ export default function Home() {
       <StarryBackground />
       <FloatingClouds />
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen py-8 px-4">
-        <div className="flex-1 flex flex-col items-center justify-center gap-8 md:gap-10 w-full max-w-4xl">
+      {/* Full-width logo banner */}
+      <div className="relative z-10">
+        <MascotLogo />
+      </div>
 
-          {/* Logo */}
-          <MascotLogo />
+      {/* Content below banner */}
+      <div className="relative z-10 flex flex-col items-center py-8 px-4">
+        <div className="flex flex-col items-center gap-8 md:gap-10 w-full max-w-4xl">
 
           {/* Preview Area */}
           <PreviewArea />
 
           {/* Prompt Input */}
-          <div className="w-full mt-auto pb-6 md:pb-10">
+          <div className="w-full pb-6 md:pb-10">
             <PromptInput />
           </div>
         </div>
