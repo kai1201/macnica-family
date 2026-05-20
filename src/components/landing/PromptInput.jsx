@@ -104,28 +104,17 @@ export default function PromptInput() {
         style={{
           backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 4px), linear-gradient(180deg, #4e3488 0%, #3c2274 46%, #502e8c 100%)`,
           boxShadow: isFocused
-            ? "inset 2px 2px 0 #c0b0f0, inset 3px 3px 0 rgba(210,190,255,0.28), inset -2px -2px 0 #0c0620, 0 0 0 3px #e91e63, 0 0 0 4px #9880d8, 0 0 0 6px #3c2c78, 0 0 16px rgba(233,30,99,0.6), 0 0 24px rgba(148,108,238,0.45), 6px 6px 0 #000"
-            : "inset 2px 2px 0 #9880d0, inset 3px 3px 0 rgba(160,140,220,0.22), inset -2px -2px 0 #0c0620, inset -3px -3px 0 rgba(8,4,20,0.55), 0 0 0 3px #e91e63, 0 0 0 4px #4b3b78, 0 0 0 6px #1a0e38, 0 0 16px rgba(233,30,99,0.4), 6px 6px 0 #000",
+            ? "inset 2px 2px 0 #c0b0f0, inset 3px 3px 0 rgba(210,190,255,0.28), inset -2px -2px 0 #0c0620, 0 0 0 2px #9880d8, 0 0 0 4px #3c2c78, 0 0 16px rgba(148,108,238,0.45), 4px 4px 0 #000"
+            : "inset 2px 2px 0 #9880d0, inset 3px 3px 0 rgba(160,140,220,0.22), inset -2px -2px 0 #0c0620, inset -3px -3px 0 rgba(8,4,20,0.55), 0 0 0 2px #4b3b78, 0 0 0 4px #1a0e38, 4px 4px 0 #000",
           position: "relative",
           transition: "box-shadow 0.04s steps(2)",
           cursor: "url('/cursor.png') 4 2, auto",
-          border: "2px solid #e91e63",
         }}
       >
         {/* Pixel corner accents */}
         {[{ top: -3, left: -3 }, { top: -3, right: -3 }, { bottom: -3, left: -3 }, { bottom: -3, right: -3 }].map((pos, i) => (
           <div key={i} style={{ position: "absolute", ...pos, width: 6, height: 6, background: isFocused ? "#c4b5fd" : "#6c52b0", zIndex: 10, pointerEvents: "none" }} />
         ))}
-
-        {/* Pixel art cloud/tree decorations */}
-        <motion.div style={{ position: "absolute", top: -12, right: 20, zIndex: 5, pointerEvents: "none" }}
-          animate={{ y: [0, -4, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
-          <div style={{ display: "flex", gap: 2 }}>
-            <div style={{ width: 12, height: 8, background: "#ec4899" }} />
-            <div style={{ width: 12, height: 8, background: "#ec4899" }} />
-            <div style={{ width: 12, height: 6, background: "#db2777", marginTop: 2 }} />
-          </div>
-        </motion.div>
 
         {/* Title bar */}
         <div style={{
