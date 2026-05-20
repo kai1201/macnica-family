@@ -86,12 +86,12 @@ export default function PreviewArea() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
     >
-      <div className="relative" style={{ margin: "32px 0", overflow: "visible", backgroundImage: "repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 4px), linear-gradient(180deg, #4e3488 0%, #3c2274 46%, #502e8c 100%)" }}>
+      <div className="relative" style={{ margin: "32px 0", overflow: "visible", backgroundImage: "repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 4px), linear-gradient(180deg, #4e3488 0%, #3c2274 46%, #502e8c 100%)", border: "3px solid #e91e63", boxShadow: "0 0 0 2px #9880d0, 0 0 20px rgba(233,30,99,0.5), 8px 8px 0 #000" }}>
 
         {/* Multi-layer pixel panel border */}
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none", zIndex: 6,
-          boxShadow: PANEL_SHADOW,
+          boxShadow: "inset 2px 2px 0 #9880d0, inset 3px 3px 0 rgba(160,140,220,0.22), inset -2px -2px 0 #0c0620, inset -3px -3px 0 rgba(8,4,20,0.55), inset 0 0 0 1px rgba(233,30,99,0.3)",
         }} />
 
         {/* Pixel corner accents */}
@@ -99,6 +99,22 @@ export default function PreviewArea() {
         <PixelCorner style={{ top: -3, right: -3 }} />
         <PixelCorner style={{ bottom: -3, left: -3 }} />
         <PixelCorner style={{ bottom: -3, right: -3 }} />
+
+        {/* Pixel art cloud/tree decorations */}
+        <motion.div style={{ position: "absolute", top: -20, right: 40, zIndex: 8, pointerEvents: "none" }}
+          animate={{ y: [0, -6, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <div style={{ display: "flex", gap: 2, marginLeft: 8 }}>
+              <div style={{ width: 10, height: 10, background: "#ec4899" }} />
+              <div style={{ width: 10, height: 10, background: "#ec4899" }} />
+            </div>
+            <div style={{ display: "flex", gap: 2 }}>
+              <div style={{ width: 10, height: 10, background: "#ec4899" }} />
+              <div style={{ width: 10, height: 10, background: "#ec4899" }} />
+              <div style={{ width: 10, height: 10, background: "#ec4899" }} />
+            </div>
+          </div>
+        </motion.div>
 
         {/* Title bar */}
         <div style={{
