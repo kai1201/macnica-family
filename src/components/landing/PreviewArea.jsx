@@ -1,20 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import mirrorImg from "@/assets/mirror.jpg";
+import mirrorImg from "@/assets/mirror.png";
 
 const PIXEL_FONT = "'DotGothic16', monospace";
 const DUST_COLORS  = ["#FBBF24", "#a78bfa", "#f9a8d4", "#7dd3fc", "#ffffff", "#34D399"];
 
-const PANEL_BG     = "#080418";
-const PANEL_SHADOW = [
-  "inset 2px 2px 0 #9880d0",
-  "inset 3px 3px 0 rgba(160,140,220,0.22)",
-  "inset -2px -2px 0 #0c0620",
-  "inset -3px -3px 0 rgba(8,4,20,0.55)",
-  "0 0 0 2px #4b3b78",
-  "0 0 0 4px #1a0e38",
-  "4px 4px 0 #000",
-].join(", ");
+const PANEL_BG  = "rgba(90, 50, 160, 0.45)";
+const INNER_SHADOW = "inset 2px 2px 0 #ead4ff, inset -2px -2px 0 #180530, 0 0 0 2px #7a44b8, 1px 1px 0 rgba(0,0,0,0.4)";
+const BOX_SHADOW_DIM  = "inset 3px 3px 0 #ead4ff, inset -3px -3px 0 #180530, 0 0 0 2px #8848c8, 0 0 8px rgba(136,72,200,0.3), 2px 2px 0 rgba(0,0,0,0.4)";
+const BOX_SHADOW_GLOW = "inset 3px 3px 0 #f0dcff, inset -3px -3px 0 #180530, 0 0 0 2px #c080ff, 0 0 22px rgba(192,128,255,0.65), 2px 2px 0 rgba(0,0,0,0.4)";
 
 // Pixel dust inside canvas
 function PixelDust() {
@@ -53,10 +47,14 @@ function PixelDust() {
   );
 }
 
-// Pixel corner accent square
-function PixelCorner({ style }) {
+// Pixel corner accent square — cycles through sparkle colors
+function PixelCorner({ style, delay = 0 }) {
   return (
-    <div style={{ position: "absolute", ...style, width: 6, height: 6, background: "#6c52b0", zIndex: 12, pointerEvents: "none" }} />
+    <motion.div
+      style={{ position: "absolute", ...style, width: 6, height: 6, zIndex: 12, pointerEvents: "none" }}
+      animate={{ background: ["#d4aff8", "#FBBF24", "#f9a8d4", "#7dd3fc", "#d4aff8"] }}
+      transition={{ duration: 3.5, repeat: Infinity, delay, ease: "linear" }}
+    />
   );
 }
 
@@ -86,25 +84,23 @@ export default function PreviewArea() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
     >
-      <div className="relative" style={{ margin: "32px 0", overflow: "visible", backgroundImage: "repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 4px), linear-gradient(180deg, #4e3488 0%, #3c2274 46%, #502e8c 100%)" }}>
-
-        {/* Multi-layer pixel panel border */}
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none", zIndex: 6,
-          boxShadow: PANEL_SHADOW,
-        }} />
-
+      <motion.div
+        className="relative"
+        style={{ margin: "16px 0", overflow: "visible", background: PANEL_BG }}
+        animate={{ boxShadow: [BOX_SHADOW_DIM, BOX_SHADOW_GLOW, BOX_SHADOW_DIM] }}
+        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+      >
         {/* Pixel corner accents */}
-        <PixelCorner style={{ top: -3, left: -3 }} />
-        <PixelCorner style={{ top: -3, right: -3 }} />
-        <PixelCorner style={{ bottom: -3, left: -3 }} />
-        <PixelCorner style={{ bottom: -3, right: -3 }} />
+        <PixelCorner style={{ top: -3, left: -3 }} delay={0} />
+        <PixelCorner style={{ top: -3, right: -3 }} delay={0.875} />
+        <PixelCorner style={{ bottom: -3, left: -3 }} delay={1.75} />
+        <PixelCorner style={{ bottom: -3, right: -3 }} delay={2.625} />
 
         {/* Title bar */}
         <div style={{
-          backgroundImage: "linear-gradient(180deg, #3a2468 0%, #2c185a 100%)",
-          borderBottom: "2px solid #0c0620",
-          boxShadow: "inset 0 2px 0 rgba(180,160,240,0.3), inset 0 -1px 0 rgba(0,0,0,0.7)",
+          background: "rgba(65, 30, 120, 0.88)",
+          borderBottom: "2px solid #2a1050",
+          boxShadow: "inset 0 2px 0 rgba(234,212,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.7)",
           padding: "8px 16px",
           display: "flex", alignItems: "center", gap: 8,
           position: "relative", zIndex: 7,
@@ -150,7 +146,6 @@ export default function PreviewArea() {
         <div style={{
           minHeight: 420,
           background: PANEL_BG,
-          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px)",
           display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
           padding: "36px 24px", position: "relative", zIndex: 7, overflow: "hidden",
         }}>
@@ -188,9 +183,9 @@ export default function PreviewArea() {
 
           {/* RPG text box — same panel style */}
           <div style={{
-            boxShadow: PANEL_SHADOW,
+            boxShadow: INNER_SHADOW,
             padding: "12px 24px",
-            background: "rgba(35, 8, 80, 0.55)",
+            background: "rgba(60, 28, 110, 0.6)",
             textAlign: "center",
             position: "relative", zIndex: 4,
           }}>
@@ -203,10 +198,10 @@ export default function PreviewArea() {
             }}
               animate={{ opacity: [1, 1, 0, 0] }}
               transition={{ duration: 1.4, repeat: Infinity, times: [0, 0.45, 0.5, 0.95] }}
-            >▶ じゅもんをまってます ▶</motion.p>
+            >じゅもんをまってます</motion.p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }

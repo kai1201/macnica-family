@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import bgImage from "@/assets/background.jpg";
+import bgImage from "@/assets/background-1.jpg";
 
 const BG_OPACITY = 1;
 
