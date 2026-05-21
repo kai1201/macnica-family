@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoSrc from "@/assets/logo.png";
+import logoSrc from "@/assets/logo-2.png";
 
 const PIXEL_FONT = "'DotGothic16', monospace";
 const BURST_COLORS = ["#FBBF24", "#a78bfa", "#f9a8d4", "#7dd3fc", "#ffffff"];
