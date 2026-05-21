@@ -207,8 +207,9 @@ export default function PromptInput() {
             </AnimatePresence>
 
             <button
-              onClick={handleGenerate}
-              onMouseDown={() => setIsPressed(true)}
+              type="button"
+              onClick={(e) => { e.stopPropagation(); handleGenerate(); }}
+              onMouseDown={(e) => { e.stopPropagation(); setIsPressed(true); }}
               onMouseUp={() => setIsPressed(false)}
               onMouseLeave={() => setIsPressed(false)}
               style={{
