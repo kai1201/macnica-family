@@ -11,7 +11,14 @@
       "Bash(powershell -command \"Add-Type -AssemblyName System.Drawing; \\\\$img = [System.Drawing.Image]::FromFile\\('C:\\\\\\\\Users\\\\\\\\21754\\\\\\\\Desktop\\\\\\\\magical-ui\\\\\\\\src\\\\\\\\assets\\\\\\\\background.jpg'\\); \\\\$w = \\\\$img.Width; \\\\$h = \\\\$img.Height; \\\\$ratio = [double]600/\\\\$w; \\\\$nw = 600; \\\\$nh = [int]\\(\\\\$h * \\\\$ratio\\); \\\\$bmp = New-Object System.Drawing.Bitmap\\(\\\\$nw, \\\\$nh\\); \\\\$g = [System.Drawing.Graphics]::FromImage\\(\\\\$bmp\\); \\\\$g.DrawImage\\(\\\\$img, 0, 0, \\\\$nw, \\\\$nh\\); \\\\$bmp.Save\\('C:\\\\\\\\Users\\\\\\\\21754\\\\\\\\Desktop\\\\\\\\magical-ui\\\\\\\\src\\\\\\\\assets\\\\\\\\bg_thumb.jpg'\\); Write-Host \\\\$w \\\\$h\")",
       "Bash(node -e:*)",
       "Bash(node -e \"require\\(''''sharp''''\\)\")",
-      "Bash(node -e \"require\\(''''jimp''''\\)\")"
+      "Bash(node -e \"require\\(''''jimp''''\\)\")",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(npx puppeteer@25.0.4 node screenshot.mjs)",
+      "Bash(node screenshot.mjs)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\21754\\\\Desktop\\\\magical-ui\" -Force -Recurse | Select-Object -Property FullName, PSIsContainer | Sort-Object FullName | ForEach-Object { if \\($_.PSIsContainer\\) { $_.FullName + \"\\\\\" } else { $_.FullName } })",
+      "Bash(awk '{print $NF}')",
+      "Bash(npx electron *)"
     ]
   }
 }

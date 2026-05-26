@@ -52,7 +52,7 @@ const HINTS = [
   "はなばたけにいるロボット",
 ];
 
-export default function PromptInput() {
+export default function PromptInput({ onGenerate, isLoading = false }) {
   const [value, setValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [burst, setBurst] = useState([]);
@@ -64,7 +64,7 @@ export default function PromptInput() {
   const magicWand = useTransparentBg(magicWandSrc);
 
   const handleGenerate = () => {
-    if (!value.trim()) return;
+    if (!value.trim() || isLoading) return;
     setIsAnimating(true);
     setIsPressed(true);
     setTimeout(() => setIsPressed(false), 120);
@@ -86,6 +86,8 @@ export default function PromptInput() {
       setBurst((prev) => prev.filter((s) => !newSparkles.find((n) => n.id === s.id)));
       setIsAnimating(false);
     }, 800);
+
+    onGenerate?.(value.trim());
   };
 
   const handleKeyDown = (e) => {
@@ -102,9 +104,9 @@ export default function PromptInput() {
       {/* Animated glow wrapper */}
       <motion.div
         animate={{ boxShadow: [
-          "0 0 8px rgba(136,72,200,0.3), 2px 2px 0 rgba(0,0,0,0.4)",
-          "0 0 22px rgba(192,128,255,0.65), 2px 2px 0 rgba(0,0,0,0.4)",
-          "0 0 8px rgba(136,72,200,0.3), 2px 2px 0 rgba(0,0,0,0.4)",
+          "0 0 8px rgba(80,90,200,0.3), 2px 2px 0 rgba(0,0,0,0.4)",
+          "0 0 22px rgba(128,144,255,0.65), 2px 2px 0 rgba(0,0,0,0.4)",
+          "0 0 8px rgba(80,90,200,0.3), 2px 2px 0 rgba(0,0,0,0.4)",
         ]}}
         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
       >
@@ -112,10 +114,10 @@ export default function PromptInput() {
       <div
         onClick={() => inputRef.current?.focus()}
         style={{
-          background: "rgba(90, 50, 160, 0.45)",
+          background: "rgba(55, 45, 160, 0.45)",
           boxShadow: isFocused
-            ? "inset 3px 3px 0 #f0dcff, inset -3px -3px 0 #180530, 0 0 0 2px #c080ff, 0 0 18px rgba(192,128,255,0.55)"
-            : "inset 3px 3px 0 #ead4ff, inset -3px -3px 0 #180530, 0 0 0 2px #8848c8",
+            ? "inset 3px 3px 0 #e0e6ff, inset -3px -3px 0 #05051a, 0 0 0 2px #8090ff, 0 0 18px rgba(128,144,255,0.55)"
+            : "inset 3px 3px 0 #d4daff, inset -3px -3px 0 #05051a, 0 0 0 2px #5a6ad8",
           position: "relative",
           transition: "box-shadow 0.08s steps(2)",
           cursor: "url('/cursor.png') 4 2, auto",
@@ -131,20 +133,20 @@ export default function PromptInput() {
 
         {/* Title bar */}
         <div style={{
-          background: "rgba(65, 30, 120, 0.88)",
-          borderBottom: "2px solid rgba(120,80,200,0.4)",
-          boxShadow: "inset 0 2px 0 rgba(234,212,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.7)",
-          padding: "6px 14px",
+          background: "rgba(25, 25, 100, 0.88)",
+          borderBottom: "2px solid rgba(80,90,200,0.4)",
+          boxShadow: "inset 0 2px 0 rgba(212,218,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.7)",
+          padding: "4px 10px",
           display: "flex",
           alignItems: "center",
-          gap: 8,
+          gap: 6,
         }}>
           <motion.img
             src={catSrc}
             alt="cat"
             animate={{ y: [0, -3, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{ width: 28, height: 28, imageRendering: "pixelated", objectFit: "contain" }}
+            style={{ width: 22, height: 22, imageRendering: "pixelated", objectFit: "contain" }}
           />
           <span style={{
             fontFamily: PIXEL_FONT,
@@ -163,13 +165,13 @@ export default function PromptInput() {
         </div>
 
         {/* Input row */}
-        <div style={{ display: "flex", alignItems: "stretch", padding: "10px 12px", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "stretch", padding: "6px 10px", gap: 8 }}>
           {/* Recessed text field */}
           <div style={{
             flex: 1,
-            background: "rgba(35, 15, 70, 0.7)",
-            boxShadow: "inset 1px 1px 0 rgba(0,0,0,0.25), inset -1px -1px 0 #7a50b0, 0 0 0 2px #5a3a90",
-            padding: "8px 12px",
+            background: "rgba(15, 12, 60, 0.7)",
+            boxShadow: "inset 1px 1px 0 rgba(0,0,0,0.25), inset -1px -1px 0 #4050a8, 0 0 0 2px #303888",
+            padding: "5px 10px",
             display: "flex", alignItems: "flex-start", gap: 8,
             cursor: "text",
           }} onClick={() => inputRef.current?.focus()}>
@@ -201,7 +203,7 @@ export default function PromptInput() {
                   overflow: "hidden",
                   display: "block",
                   width: "100%",
-                  textShadow: "0 0 8px #a78bfa, 0 0 16px #7C3AED",
+                  textShadow: "0 0 8px #8090ff, 0 0 16px #5060c8",
                 }}
               />
           </div>
@@ -227,7 +229,8 @@ export default function PromptInput() {
                 background: "transparent",
                 border: "none",
                 boxShadow: "none",
-                cursor: "pointer",
+                cursor: isLoading ? "not-allowed" : "pointer",
+                opacity: isLoading ? 0.7 : 1,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -238,13 +241,13 @@ export default function PromptInput() {
               <motion.img
                 src={magicWand}
                 alt="magic wand"
-                animate={{ rotate: isAnimating ? [0, 360] : [0, -15, 15, 0] }}
-                transition={isAnimating
-                  ? { duration: 0.5, ease: "linear" }
+                animate={{ rotate: (isAnimating || isLoading) ? [0, 360] : [0, -15, 15, 0] }}
+                transition={(isAnimating || isLoading)
+                  ? { duration: 0.6, ease: "linear", repeat: Infinity }
                   : { duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
                 style={{
-                  width: 56,
-                  height: 56,
+                  width: 44,
+                  height: 44,
                   imageRendering: "pixelated",
                   objectFit: "cover",
                   display: "block",
@@ -256,18 +259,18 @@ export default function PromptInput() {
 
         {/* Hint bar */}
         <div style={{
-          borderTop: "2px solid rgba(120,80,200,0.4)",
-          padding: "6px 14px",
+          borderTop: "2px solid rgba(80,90,200,0.4)",
+          padding: "4px 10px",
           display: "flex",
           alignItems: "center",
           gap: 6,
         }}>
-          <span style={{ fontFamily: PIXEL_FONT, fontSize: "1rem", color: "#e9d8ff", textShadow: "0 0 8px #c4b5fd" }}>ヒント：</span>
+          <span style={{ fontFamily: PIXEL_FONT, fontSize: "0.85rem", color: "#d8e2ff", textShadow: "0 0 8px #8090ff" }}>ヒント：</span>
           <p style={{
             fontFamily: PIXEL_FONT,
-            fontSize: "0.9rem",
-            color: "rgba(233,216,255,0.85)",
-            textShadow: "0 0 6px rgba(196,181,253,0.6)",
+            fontSize: "0.85rem",
+            color: "rgba(216,226,255,0.85)",
+            textShadow: "0 0 6px rgba(128,144,255,0.6)",
             lineHeight: 1.6,
           }}>
             "{hint}"
