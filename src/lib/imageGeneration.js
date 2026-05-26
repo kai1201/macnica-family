@@ -1,16 +1,6 @@
 function buildEnhancedPrompt(userPrompt) {
   return `Create a bright, visually appealing, high-quality illustration.
 
-Style requirements:
-- Bright and positive atmosphere
-- Clean modern design
-- Professional presentation quality
-- Rich details
-- Sharp focus
-- Vibrant colors
-- Well-balanced composition
-- Suitable for business presentations and digital whiteboards
-
 Layout requirements:
 - Landscape orientation
 - Wide horizontal composition
