@@ -1,4 +1,39 @@
-export async function generateImage(prompt) {
+function buildEnhancedPrompt(userPrompt) {
+  return `Create a bright, visually appealing, high-quality illustration.
+
+Style requirements:
+- Bright and positive atmosphere
+- Clean modern design
+- Professional presentation quality
+- Rich details
+- Sharp focus
+- Vibrant colors
+- Well-balanced composition
+- Suitable for business presentations and digital whiteboards
+
+Layout requirements:
+- Landscape orientation
+- Wide horizontal composition
+- Similar to a presentation slide
+- Suitable for display on a Magic Canvas
+- Keep important content centered
+- Leave safe margins around the edges
+- Avoid cropping important objects
+- Avoid excessive empty space
+
+Image quality requirements:
+- High resolution
+- Polished and professional
+- Visually impressive
+- Easy to understand at a glance
+
+User request:
+${userPrompt}`;
+}
+
+export async function generateImage(userPrompt) {
+  const prompt = buildEnhancedPrompt(userPrompt);
+
   // In Electron: IPC call — API keys stay in the main process, never in renderer
   if (typeof window !== 'undefined' && window.electronAPI) {
     const result = await window.electronAPI.generateImage(prompt);
@@ -25,7 +60,7 @@ export async function generateImage(prompt) {
     },
     body: JSON.stringify({
       prompt,
-      size: "1024x1024",
+      size: "1792x1024",
       quality: "low",
       output_format: "png",
       n: 1,

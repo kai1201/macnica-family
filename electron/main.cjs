@@ -91,7 +91,7 @@ ipcMain.handle('generate-image', async (_event, prompt) => {
       },
       body: JSON.stringify({
         prompt,
-        size: '1024x1024',
+        size: '1792x1024',
         quality: 'low',
         output_format: 'png',
         n: 1,

@@ -548,8 +548,8 @@ export default function PreviewArea({ generatedImage = null, isLoading = false, 
                 src={generatedImage}
                 alt="generated"
                 style={{
-                  position: "absolute", inset: 0,
-                  width: "100%", height: "100%",
+                  position: "absolute", inset: "16px 0",
+                  width: "100%", height: "calc(100% - 32px)",
                   objectFit: "contain", zIndex: 6,
                   display: "block",
                 }}
