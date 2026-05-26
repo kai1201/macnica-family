@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import mirrorImg from "@/assets/mirror.png";
+import downloadIconSrc from "@/assets/download-icon.png";
 
 const PIXEL_FONT = "'DotGothic16', monospace";
 const DUST_COLORS = ["#FBBF24", "#a78bfa", "#f9a8d4", "#7dd3fc", "#ffffff", "#34D399"];
@@ -14,6 +15,8 @@ const SPELL_COLORS = [
   "#ffffff", "#FBBF24", "#fde68a", "#f9a8d4",
   "#7dd3fc", "#d4aff8", "#c4b5fd", "#a78bfa", "#34D399",
 ];
+
+const BURST_EMOJIS = ["✨", "⭐", "💫", "🌟", "✦", "⚡"];
 
 // ─── Background pixel dust ────────────────────────────────────────────────────
 function PixelDust() {
@@ -309,13 +312,87 @@ function SpellCanvas({ active, rushing }) {
   );
 }
 
+// ─── Download burst sparkle ───────────────────────────────────────────────────
+function DownloadBurstSparkle({ style }) {
+  return (
+    <motion.div
+      className="absolute pointer-events-none select-none"
+      style={{ left: style.x, top: style.y, zIndex: 50, fontSize: 14 }}
+      initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
+      animate={{ opacity: [1, 1, 0], scale: [0, 1.4, 0.8], x: style.vx, y: style.vy }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+    >
+      {style.emoji}
+    </motion.div>
+  );
+}
+
 // ─── PreviewArea ──────────────────────────────────────────────────────────────
 export default function PreviewArea({ generatedImage = null, isLoading = false, error = null }) {
   const [sparkles,    setSparkles]    = useState([]);
   const [isFlashing,  setIsFlashing]  = useState(false);
   const [imageVisible, setImageVisible] = useState(false);
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [downloadBurst,   setDownloadBurst]   = useState([]);
+  const [downloadHover,   setDownloadHover]   = useState(false);
   const sparkleId   = useRef(0);
   const prevImgRef  = useRef(null);
+  const dlBurstId   = useRef(0);
+
+  const handleDownload = async () => {
+    if (!generatedImage) return;
+
+    const newBurst = Array.from({ length: 12 }, (_, i) => {
+      const angle = (i / 12) * Math.PI * 2;
+      const dist = 45 + Math.random() * 35;
+      return {
+        id: dlBurstId.current++,
+        x: "50%", y: "50%",
+        emoji: BURST_EMOJIS[Math.floor(Math.random() * BURST_EMOJIS.length)],
+        vx: Math.cos(angle) * dist,
+        vy: Math.sin(angle) * dist,
+      };
+    });
+    setDownloadBurst((prev) => [...prev, ...newBurst]);
+    setTimeout(() => {
+      setDownloadBurst((prev) => prev.filter((s) => !newBurst.find((n) => n.id === s.id)));
+    }, 900);
+
+    const fileName = `magical-creation-${Date.now()}.png`;
+
+    try {
+      const img = new window.Image();
+      img.crossOrigin = "anonymous";
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = generatedImage;
+      });
+      const canvas = document.createElement("canvas");
+      canvas.width  = img.naturalWidth  || 1024;
+      canvas.height = img.naturalHeight || 1024;
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      canvas.toBlob(
+        (blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = fileName;
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        },
+        "image/png",
+      );
+    } catch {
+      const link = document.createElement("a");
+      link.href = generatedImage;
+      link.download = fileName;
+      link.click();
+    }
+
+    setDownloadSuccess(true);
+    setTimeout(() => setDownloadSuccess(false), 2800);
+  };
 
   // Hide image & reset flash when a new generation starts
   useEffect(() => {
@@ -508,6 +585,93 @@ export default function PreviewArea({ generatedImage = null, isLoading = false, 
                     animate={{ opacity: [1, 0.35, 1] }}
                     transition={{ duration: 1.1, repeat: Infinity }}
                   >まほうをかけています...</motion.p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* ── Download button — bottom-right corner, visible when image is shown ── */}
+          <AnimatePresence>
+            {imageVisible && generatedImage && (
+              <motion.div
+                style={{
+                  position: "absolute", bottom: 12, right: 12,
+                  display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 5,
+                  zIndex: 15, pointerEvents: "none",
+                }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.4, delay: 0.45 }}
+              >
+                {/* Success message */}
+                <AnimatePresence>
+                  {downloadSuccess && (
+                    <motion.div
+                      style={{
+                        background: "rgba(8, 6, 35, 0.92)",
+                        border: "1px solid rgba(52, 211, 153, 0.65)",
+                        padding: "3px 12px",
+                        backdropFilter: "blur(6px)",
+                        boxShadow: "0 0 14px rgba(52, 211, 153, 0.45), inset 1px 1px 0 rgba(255,255,255,0.06)",
+                      }}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <p style={{
+                        fontFamily: PIXEL_FONT, fontSize: "0.72rem",
+                        color: "#34D399", margin: 0,
+                        textShadow: "0 0 8px #34D399, 0 0 16px #10b981",
+                      }}>
+                        ✨ ほぞんできたよ！
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Download button */}
+                <div style={{ position: "relative", pointerEvents: "auto" }}>
+                  <AnimatePresence>
+                    {downloadBurst.map((s) => <DownloadBurstSparkle key={s.id} style={s} />)}
+                  </AnimatePresence>
+                  <motion.button
+                    onClick={handleDownload}
+                    onMouseEnter={() => setDownloadHover(true)}
+                    onMouseLeave={() => setDownloadHover(false)}
+                    whileTap={{ scale: 0.95, x: 2, y: 2 }}
+                    animate={{
+                      boxShadow: downloadHover
+                        ? "inset 2px 2px 0 #e0e6ff, inset -2px -2px 0 #05051a, 0 0 0 2px #8090ff, 0 0 20px rgba(167,139,250,0.85), 0 0 36px rgba(128,100,255,0.5)"
+                        : "inset 2px 2px 0 #d4daff, inset -2px -2px 0 #05051a, 0 0 0 2px #5060c8, 0 0 6px rgba(80,90,210,0.25)",
+                    }}
+                    transition={{ duration: 0.18 }}
+                    style={{
+                      fontFamily: PIXEL_FONT,
+                      fontSize: "0.8rem",
+                      color: downloadHover ? "#ffffff" : "#e2d4ff",
+                      background: "rgba(55, 45, 160, 0.88)",
+                      border: "none",
+                      padding: "5px 14px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 5,
+                      backdropFilter: "blur(6px)",
+                      textShadow: downloadHover
+                        ? "0 0 10px #d4aff8, 0 0 22px #a78bfa"
+                        : "0 0 6px #8090ff",
+                      transition: "color 0.15s, text-shadow 0.15s",
+                    }}
+                  >
+                    <img
+                      src={downloadIconSrc}
+                      alt=""
+                      style={{ width: 18, height: 18, imageRendering: "pixelated", objectFit: "contain" }}
+                    />
+                    <span>がぞうをほぞん</span>
+                  </motion.button>
                 </div>
               </motion.div>
             )}
