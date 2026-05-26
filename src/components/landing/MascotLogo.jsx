@@ -15,7 +15,7 @@ export default function MascotLogo() {
       <motion.img
         src={logoSrc}
         alt="logo"
-        style={{ width: "100%", maxHeight: "120px", display: "block", objectFit: "cover" }}
+        style={{ width: "100%", height: "auto", display: "block" }}
         animate={{ y: [0, -5, 0] }}
         transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
       />
